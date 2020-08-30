@@ -1,22 +1,28 @@
 <?php
+// headers cors
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Access-Control-Allow-Methods, Authorization, X-Requested-With');
+
 $info = "";
 $data = "";
-$object = "";
+$object = array();
 
 
 if (isset($_POST)) {
     $body = file_get_contents('php://input');
     $data = json_decode($body);
-
-    $object = ((float)$data->balance * (4.25 / 100)) / (1 - (1 / ((1 + (4.25 / 100) * (float) $data->n))));
-} else {
-    $info = "data is not fetched";
-    $data = "not data";
+    if ($data->balance != "" && $data->n != "") {
+        $object["success"] = true;
+        $object["PMT"] = ((float)$data->balance * (4.25 / 100)) / (1 - (1 / ((1 + (4.25 / 100) * (float) $data->n))));
+    } else {
+        $object["success"] = false;
+        $object["message"] = "body can't empty!";
+    }
 }
 header("Content-Type:application/json");
 
-// $result =  new \stdClass();
-// $result->info = $body->name;
-// // $result->data = $data;
-// // $result->info = $info;
-echo json_encode([$object]);
+
+echo json_encode($object);
+// $q1(ufHxD1sxmNYHkx13625442ptmkabir
