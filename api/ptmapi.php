@@ -14,10 +14,10 @@ if (isset($_POST)) {
     $body = file_get_contents('php://input');
     $data = json_decode($body);
     if ($data->balance != "" && $data->n != "") {
-        $object["success"] = true;
+        $object["status"] = "success";
         $object["PMT"] = ((float)$data->balance * (4.25 / 100)) / (1 - (1 / ((1 + (4.25 / 100) * (float) $data->n))));
     } else {
-        $object["success"] = false;
+        $object["status"] = "failed";
         $object["message"] = "body can't empty!";
     }
 }
